@@ -1,40 +1,42 @@
-# Sinppix - Code Screenshot
+# CodeCanvas 🎨
 
-A powerful tool for sharing code snippets with additional features. Share beautiful screenshots of your code on your social media platforms.
+**CodeCanvas** is a beautiful, feature-rich tool for creating stunning code snippets and browser mockups. It transforms your code and screenshots into shareable, professional-grade images with a highly customizable studio interface.
 
-Project Live at: https://snippix.vercel.app/
+![CodeCanvas Demo](https://github.com/ZeelJasani/CodeCanvas/raw/main/public/demo.png)
+*(Note: Add a `demo.png` to your public folder to show off a screenshot here)*
 
----
+## ✨ Features
 
-## 🎨 Features
+### 🖥️ Studio Interface
 
-- 10+ elegant themes (light + dark theme included).
-- 12+ font styles (popular monospace fonts).
-- Auto-detection & syntax highlighting for all major programming languages.
-- Export as PNG/SVG, copy to clipboard, or share via link.
-- Change font size, background, padding, line numbers, and more.
+- **Modern Sidebar Layout**: A clean, collapsible left sidebar gives you quick access to all controls.
+- **Responsive Design**: Fully responsive UI that works seamlessly on desktop and mobile.
+- **Dark/Light Mode**: The entire application supports beautiful dark and light themes.
 
----
+### 🖼️ Browser Mockup (New!)
 
-## 🧪 Technologies Used
+- **Realistic macOS Frame**: Showcase your web projects in a pixel-perfect macOS Safari browser window.
+- **Editable Address Bar**: Type any URL you want to display in the address bar.
+- **Security Indicator**: Toggle-able "Secure" lock icon style.
+- **Independent Window Theme**: Switch the browser window between **Light** and **Dark** modes properly, independent of your app's theme.
 
-- [**React**](https://react.dev) – Front-end JavaScript library
-- [**Next.js**](https://nextjs.org) – Full-stack React framework with SSR
-- [**TypeScript**](https://www.typescriptlang.org) – Static typing for scalable
-  apps
-- [**Tailwind CSS**](https://tailwindcss.com) – Utility-first CSS framework
-- [**ShadCN UI**](https://ui.shadcn.dev) – Radix-powered component library
-  styled with Tailwind
-- [**Zustand**](https://github.com/pmndrs/zustand) – Simple and fast state
-  management
-- [**Highlight.js**](https://highlightjs.org) – Language detection and syntax
-  highlighting
-- [**React Simple Code Editor**](https://github.com/satya164/react-simple-code-editor)
-  – Lightweight code editor in the browser
-- [**HTML-to-Image**](https://github.com/bubkoo/html-to-image) – Converts DOM to
-  image using canvas/SVG
-- [**React Hot Toast**](https://react-hot-toast.com) – Sleek toast notifications
-- [**React Hotkeys Hook**](https://github.com/JohannesKlauss/react-hotkeys-hook)
-  – Keyboard shortcuts made easy
-- [**Resizable**](https://github.com/bokuweb/react-resizable-box) – Resizable
-  container component
+### 💻 Code Snippets
+
+- **Syntax Highlighting**: Support for multiple languages with accurate highlighting.
+- **Beautiful Themes**: Choose from popular themes like Atom One Dark, Dracula, GitHub Dark, and more.
+- **Custom Fonts**:  Use developer-favorite fonts like JetBrains Mono, Fira Code, and Geist Mono.
+
+### 🎨 Customization
+
+- **Backgrounds**: toggle between solid colors, gradients, or transparent backgrounds.
+- **Window Controls**: Choose between macOS (Traffic Lights), Windows, or None.
+- **Adjustable Padding**: Control the spacing around your content.
+- **Shadows & Roundness**: Fine-tune the drop shadow and corner radius.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **UI Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
