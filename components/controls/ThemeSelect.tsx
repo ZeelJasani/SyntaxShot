@@ -24,7 +24,7 @@ export default function ThemeSelect() {
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Select Theme" />
         </SelectTrigger>
-        <SelectContent className="dark">
+        <SelectContent className="bg-white/95 text-neutral-900 border-neutral-200 shadow-lg">
           {/* Object.entries(themes) returns an array of key-value pairs, where each pair consists of a theme name (name) and its corresponding theme object (theme) */}
           {Object.entries(themes).map(([name, theme]) => (
             <SelectItem key={name} value={name}>

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, hexToRgba } from "@/lib/utils";
 import { usePreferencesStore } from "@/store/use-preferences-store";
 import WindowControls from "@/components/WindowControls";
 
@@ -6,19 +6,28 @@ import BrowserWindowHeader from "@/components/BrowserWindowHeader";
 
 export default function ImageCanvas() {
     const store = usePreferencesStore();
+    const boxShadow = store.shadowEnabled
+        ? `${store.shadowX}px ${store.shadowY}px ${store.shadowBlur}px ${store.shadowSpread}px ${hexToRgba(
+            store.shadowColor,
+            store.shadowOpacity / 100
+        )}`
+        : "none";
+    const showFileName = store.showImageFileName && store.imageFileName;
 
     return (
         <div
             className={cn(
-                "rounded-xl shadow-2xl transition-all overflow-hidden flex flex-col",
+                "transition-all overflow-hidden flex flex-col",
                 store.darkMode
                     ? "bg-black/75 border-gray-600/40"
                     : "bg-white/75 border-gray-200/20"
             )}
             style={{
                 borderWidth: `${store.imageBorderWidth}px`,
-                borderStyle: 'solid',
-                borderColor: store.darkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(229, 231, 235, 0.2)'
+                borderStyle: "solid",
+                borderColor: store.imageBorderColor,
+                borderRadius: `${store.frameRadius}px`,
+                boxShadow
             }}
         >
             {store.windowControlStyle === "macos" ? (
@@ -29,7 +38,29 @@ export default function ImageCanvas() {
                         style={store.windowControlStyle}
                         size={store.windowScale}
                     />
+                    {showFileName && (
+                        <div className="col-span-4 flex justify-center">
+                            <div className="text-xs text-gray-400 truncate max-w-[220px]">
+                                {store.imageFileName}
+                            </div>
+                        </div>
+                    )}
                 </header>
+            )}
+
+            {showFileName && store.windowControlStyle === "macos" && (
+                <div
+                    className={cn(
+                        "px-4 py-2 text-xs text-center border-b",
+                        store.windowTheme === "dark"
+                            ? "bg-neutral-900 text-neutral-400 border-neutral-800"
+                            : "bg-white text-neutral-500 border-neutral-200"
+                    )}
+                >
+                    <span className="truncate inline-block max-w-[260px]">
+                        {store.imageFileName}
+                    </span>
+                </div>
             )}
 
             <div

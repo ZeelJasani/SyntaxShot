@@ -98,6 +98,10 @@ export const themes: Record<string, { background: string; theme: string }> = {
 };
 
 export const fonts: Record<string, { name: string; src: string }> = {
+  geistMono: {
+    name: "Geist Mono",
+    src: "",
+  },
   jetBrainsMono: {
     name: "JetBrains Mono",
     src: "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap",

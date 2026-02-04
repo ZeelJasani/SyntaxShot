@@ -7,11 +7,16 @@ import { Upload, X } from "lucide-react";
 export default function ImageUploader() {
     const imageUrl = usePreferencesStore((state) => state.imageUrl);
     const setImageUrl = usePreferencesStore((state) => state.setImageUrl);
+    const imageFileName = usePreferencesStore((state) => state.imageFileName);
+    const setImageFileName = usePreferencesStore(
+        (state) => state.setImageFileName
+    );
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
 
     const handleFileSelect = (file: File) => {
         if (file && file.type.startsWith("image/")) {
+            setImageFileName(file.name);
             const reader = new FileReader();
             reader.onload = (e) => {
                 const result = e.target?.result as string;
@@ -39,6 +44,7 @@ export default function ImageUploader() {
 
     const handleClear = () => {
         setImageUrl("");
+        setImageFileName("");
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
@@ -64,7 +70,7 @@ export default function ImageUploader() {
                             className="w-12 h-12 object-cover rounded"
                         />
                         <div className="flex-1 text-xs text-gray-400 truncate">
-                            Image loaded
+                            {imageFileName || "Image loaded"}
                         </div>
                         <Button
                             size="sm"

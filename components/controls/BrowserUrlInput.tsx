@@ -23,7 +23,7 @@ export default function BrowserUrlInput() {
                 value={browserUrl}
                 onChange={(e) => setBrowserUrl(e.target.value)}
                 className="h-8 bg-neutral-800 border-neutral-700 text-xs"
-                placeholder="postra.app"
+                placeholder="syntaxshot.vercel.app"
             />
         </div>
     );

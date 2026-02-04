@@ -35,8 +35,9 @@ export default function LanguageSelect() {
           {autoDetectLanguage && <MagicWandIcon className="mr-2" />}
           <SelectValue placeholder="Select Language" />
         </SelectTrigger>
-        <SelectContent className="dark max-h-[500px]">
+        <SelectContent className="bg-white/95 text-neutral-900 border-neutral-200 shadow-lg max-h-[500px]">
           <SelectItem value="auto-detect">Auto Detect</SelectItem>
+          <SelectItem value="plaintext">Normal text</SelectItem>
           {Object.entries(languages).map(([lang, name]) => (
             <SelectItem key={lang} value={lang}>
               {name}

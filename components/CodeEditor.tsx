@@ -1,14 +1,46 @@
-import { cn } from "@/lib/utils";
+import { cn, hexToRgba } from "@/lib/utils";
 import flourite from "flourite";
 import { codeSnippets, fonts } from "@/options";
 import hljs from "highlight.js";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Editor from "react-simple-code-editor";
 import { usePreferencesStore } from "@/store/use-preferences-store";
 import WindowControls from "@/components/WindowControls";
 
+const parseHighlightLines = (input: string) => {
+  const set = new Set<number>();
+  if (!input.trim()) return set;
+  const parts = input.split(",");
+  for (const part of parts) {
+    const value = part.trim();
+    if (!value) continue;
+    if (value.includes("-")) {
+      const [rawStart, rawEnd] = value.split("-");
+      const start = Number.parseInt(rawStart, 10);
+      const end = Number.parseInt(rawEnd, 10);
+      if (!Number.isNaN(start) && !Number.isNaN(end)) {
+        const min = Math.min(start, end);
+        const max = Math.max(start, end);
+        for (let i = min; i <= max; i += 1) {
+          set.add(i);
+        }
+      }
+    } else {
+      const line = Number.parseInt(value, 10);
+      if (!Number.isNaN(line)) {
+        set.add(line);
+      }
+    }
+  }
+  return set;
+};
+
 export default function CodeEditor() {
   const store = usePreferencesStore();
+  const highlightedLines = useMemo(
+    () => parseHighlightLines(store.highlightLines),
+    [store.highlightLines]
+  );
 
   // Add random code snippets on mount
   useEffect(() => {
@@ -28,18 +60,27 @@ export default function CodeEditor() {
     }
   }, [store.autoDetectLanguage, store.code]);
 
+  const boxShadow = store.shadowEnabled
+    ? `${store.shadowX}px ${store.shadowY}px ${store.shadowBlur}px ${store.shadowSpread}px ${hexToRgba(
+        store.shadowColor,
+        store.shadowOpacity / 100
+      )}`
+    : "none";
+
   return (
     <div
       className={cn(
-        "rounded-xl shadow-2xl overflow-hidden transition-all",
+        "overflow-hidden transition-all",
         store.darkMode
           ? "bg-black/75 border-gray-600/40"
           : "bg-white/75 border-gray-200/20"
       )}
       style={{
         borderWidth: `${store.imageBorderWidth}px`,
-        borderStyle: 'solid',
-        borderColor: store.darkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(229, 231, 235, 0.2)'
+        borderStyle: "solid",
+        borderColor: store.imageBorderColor,
+        borderRadius: `${store.frameRadius}px`,
+        boxShadow,
       }}
     >
       <header className="grid grid-cols-6 gap-3 items-center px-4 py-3">
@@ -75,15 +116,35 @@ export default function CodeEditor() {
         <Editor
           value={store.code}
           onValueChange={(code) => usePreferencesStore.setState({ code })}
-          highlight={(code) =>
-            hljs.highlight(code, { language: store.language || "plaintext" })
-              .value
-          }
+          highlight={(code) => {
+            const highlighted = hljs.highlight(code, {
+              language: store.language || "plaintext",
+            }).value;
+            if (!store.showLineNumbers && highlightedLines.size === 0) {
+              return highlighted;
+            }
+            const lines = highlighted.split("\n");
+            return lines
+              .map((line, index) => {
+                const lineNumber = index + 1;
+                const isHighlighted = highlightedLines.has(lineNumber);
+                const lineClass = isHighlighted
+                  ? "editor-line editor-line--highlight"
+                  : "editor-line";
+                const numberMarkup = store.showLineNumbers
+                  ? `<span class="line-number">${lineNumber}</span>`
+                  : "";
+                const content = line || " ";
+                return `<span class="${lineClass}">${numberMarkup}<span class="line-content">${content}</span></span>`;
+              })
+              .join("\n");
+          }}
           style={{
             fontFamily: fonts[store.fontStyle as keyof typeof fonts].name,
             fontSize: store.fontSize,
           }}
           textareaClassName="focus:outline-none"
+          preClassName="code-editor"
           onClick={(e) => {
             if (e.target instanceof HTMLTextAreaElement) {
               e.target.select();

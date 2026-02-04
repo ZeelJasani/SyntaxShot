@@ -25,7 +25,7 @@ export default function FontSelect() {
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Select Font" />
         </SelectTrigger>
-        <SelectContent className="dark max-h-[500px]">
+        <SelectContent className="bg-white/95 text-neutral-900 border-neutral-200 shadow-lg max-h-[500px]">
           {Object.entries(fonts).map(([id, font]) => (
             <SelectItem key={id} value={id}>
               {font.name}

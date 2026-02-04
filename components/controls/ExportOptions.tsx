@@ -19,6 +19,36 @@ export default function ExportOptions({
   targetRef: React.RefObject<HTMLDivElement>;
 }) {
   const title = usePreferencesStore((state) => state.title);
+  const exportPreset = usePreferencesStore((state) => state.exportPreset);
+
+  const presetMap = {
+    none: null,
+    square1080: { width: 1080, height: 1080, label: "1080x1080" },
+    social1200x628: { width: 1200, height: 628, label: "1200x628" },
+    widescreen1600x900: { width: 1600, height: 900, label: "1600x900" },
+    hd1920x1080: { width: 1920, height: 1080, label: "1920x1080" },
+  } as const;
+
+  const exportSize = presetMap[exportPreset];
+
+  const buildExportOptions = () => {
+    if (!exportSize) {
+      return { pixelRatio: 2 };
+    }
+    return {
+      pixelRatio: 2,
+      width: exportSize.width,
+      height: exportSize.height,
+      style: {
+        width: `${exportSize.width}px`,
+        height: `${exportSize.height}px`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+      },
+    };
+  };
 
   const copyImage = async () => {
     const loading = toast.loading("Copying...");
@@ -26,7 +56,7 @@ export default function ExportOptions({
     try {
       // generate blob from DOM node using html-to-image library
       const imgBlob = await toBlob(targetRef.current, {
-        pixelRatio: 2,
+        ...buildExportOptions(),
       });
 
       // Create a new ClipboardItem from the image blob
@@ -73,11 +103,11 @@ export default function ExportOptions({
       let imgUrl, filename;
       switch (format) {
         case "PNG":
-          imgUrl = await toPng(targetRef.current, { pixelRatio: 2 });
+          imgUrl = await toPng(targetRef.current, buildExportOptions());
           filename = `${name}.png`;
           break;
         case "SVG":
-          imgUrl = await toSvg(targetRef.current, { pixelRatio: 2 });
+          imgUrl = await toSvg(targetRef.current, buildExportOptions());
           filename = `${name}.svg`;
           break;
 
@@ -113,7 +143,7 @@ export default function ExportOptions({
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="dark">
+      <DropdownMenuContent className="bg-white/95 text-neutral-900 border-neutral-200 shadow-lg">
         <DropdownMenuItem className="gap-2" onClick={copyImage}>
           <ImageIcon />
           Copy Image

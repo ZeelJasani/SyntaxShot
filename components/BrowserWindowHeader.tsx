@@ -102,7 +102,7 @@ const BrowserWindowHeader: React.FC<BrowserWindowHeaderProps> = ({ width }) => {
                                 isDark ? "text-neutral-300" : "text-neutral-600"
                             )}
                             style={{ fontSize: inputFontSize }}
-                            placeholder="postra.app"
+                            placeholder="syntaxshot.vercel.app"
                         />
                     </div>
 
